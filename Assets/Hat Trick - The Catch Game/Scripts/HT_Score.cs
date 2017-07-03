@@ -18,7 +18,7 @@ public class HT_Score : MonoBehaviour {
 	void OnTriggerEnter2D (Collider2D other) {
 		score += ballValue;
 		UpdateScore ();
-        if(score == 5)
+        if(score == 10)
         {
             gameController.won = true;
             gameController.timeLeft = 0;
