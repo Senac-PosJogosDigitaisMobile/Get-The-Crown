@@ -2,8 +2,10 @@
 using System.Collections;
 
 public class HT_GameController : MonoBehaviour {
-	
-	public Camera cam;
+
+    //public HT_Score scoreControl;
+
+    public Camera cam;
 	public GameObject[] balls;
 	public float timeLeft;
 	public GUIText timerText;
@@ -11,13 +13,24 @@ public class HT_GameController : MonoBehaviour {
 	public GameObject restartButton;
 	public GameObject splashScreen;
 	public GameObject startButton;
+    public GameObject optionsButton;
+    public GameObject creditsButton;
+    public GameObject creditsPop;
+    public GameObject backButton;
+    public GameObject bgMusic;
+    public GameObject winText;
 	public HT_HatController hatController;
+
+    public bool won;
 	
 	private float maxWidth;
 	private bool counting;
 	
 	// Use this for initialization
 	void Start () {
+
+        won = false;
+
 		if (cam == null) {
 			cam = Camera.main;
 		}
@@ -41,12 +54,25 @@ public class HT_GameController : MonoBehaviour {
 	public void StartGame () {
 		splashScreen.SetActive (false);
 		startButton.SetActive (false);
+        creditsButton.SetActive(false);
+        creditsPop.SetActive(false);
+        backButton.SetActive(false);
 		hatController.ToggleControl (true);
 		StartCoroutine (Spawn ());
 	}
 
+    public void Credits()
+    {
+        splashScreen.SetActive(false);
+        startButton.SetActive(false);
+        creditsButton.SetActive(false);
+        bgMusic.SetActive(false);
+        creditsPop.SetActive(true);
+        backButton.SetActive(true);
+    }
+
 	public IEnumerator Spawn () {
-		yield return new WaitForSeconds (2.0f);
+		yield return new WaitForSeconds (1.0f);
 		counting = true;
 		while (timeLeft > 0) {
 			GameObject ball = balls [Random.Range (0, balls.Length)];
@@ -57,11 +83,19 @@ public class HT_GameController : MonoBehaviour {
 			);
 			Quaternion spawnRotation = Quaternion.identity;
 			Instantiate (ball, spawnPosition, spawnRotation);
-			yield return new WaitForSeconds (Random.Range (1.0f, 2.0f));
-		}
-		yield return new WaitForSeconds (2.0f);
-		gameOverText.SetActive (true);
-		yield return new WaitForSeconds (2.0f);
+            //yield return new WaitForSeconds (Random.Range (1.0f, 2.0f));
+            yield return new WaitForSeconds(Random.Range(.1f, 1.0f));
+        }
+		yield return new WaitForSeconds (0.1f);
+        if(won)
+        {
+            winText.SetActive(true);
+        }
+        else
+        {
+            gameOverText.SetActive(true);
+        }
+		yield return new WaitForSeconds (1.0f);
 		restartButton.SetActive (true);
 	}
 }

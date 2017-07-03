@@ -1,0 +1,76 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class HT_Score : MonoBehaviour {
+
+	public GUIText scoreText;
+	public int ballValue;
+
+    private string currentWeapon;
+    private int score;
+    private int bowCount;
+    private int hammerCount;
+    private int swordCount;
+
+	void Start () {
+        currentWeapon = "Arma";
+		score = 0;
+        swordCount = 0;
+        hammerCount = 0;
+        bowCount = 0;
+		UpdateScore ();
+	}
+
+	void OnTriggerEnter2D (Collider2D other) {
+		score += ballValue;
+		UpdateScore ();
+	}
+	
+	void OnCollisionEnter2D (Collision2D collision) {
+		if (collision.gameObject.tag == "Sword") {
+            currentWeapon = "Espada";
+            if(currentWeapon.Equals("Espada"))
+            {
+                bowCount = 0;
+                hammerCount = 0;
+                swordCount += ballValue;
+                score = swordCount;
+            }
+			//score -= ballValue * 2;
+			UpdateScore ();
+		}
+
+        if (collision.gameObject.tag == "Hammer")
+        {
+            currentWeapon = "Martelo";
+            if (currentWeapon.Equals("Martelo"))
+            {
+                bowCount = 0;
+                swordCount = 0;
+                hammerCount += ballValue;
+                score = hammerCount;
+            }
+            //score -= ballValue * 2;
+            UpdateScore();
+        }
+
+        if (collision.gameObject.tag == "Bow")
+        {
+            currentWeapon = "Arco";
+            if (currentWeapon.Equals("Arco"))
+            {
+                swordCount = 0;
+                hammerCount = 0;
+                bowCount += ballValue;
+                score = bowCount;
+            }
+            //score -= ballValue * 2;
+            UpdateScore();
+        }
+
+    }
+
+	void UpdateScore () {
+		scoreText.text = currentWeapon + "\n" + score;
+	}
+}

@@ -3,10 +3,12 @@ using System.Collections;
 
 public class HT_Score : MonoBehaviour {
 
-	public GUIText scoreText;
+    public HT_GameController gameController;
+
+    public GUIText scoreText;
 	public int ballValue;
 
-	private int score;
+	public int score;
 
 	void Start () {
 		score = 0;
@@ -16,12 +18,20 @@ public class HT_Score : MonoBehaviour {
 	void OnTriggerEnter2D (Collider2D other) {
 		score += ballValue;
 		UpdateScore ();
+        if(score == 5)
+        {
+            gameController.won = true;
+            gameController.timeLeft = 0;
+        }
 	}
 	
 	void OnCollisionEnter2D (Collision2D collision) {
 		if (collision.gameObject.tag == "Bomb") {
-			score -= ballValue * 2;
+            //score -= ballValue * 2;
+            gameController.timeLeft = 0;
+            score = 0;
 			UpdateScore ();
+            gameController.won = false;
 		}
 	}
 
